@@ -4,8 +4,6 @@ import java.io.Serializable;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 
-
-
 public class WorkingFurnace implements Serializable{
 	private int x,y,z;
 	private String creator, world;
