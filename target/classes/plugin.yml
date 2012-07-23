@@ -1,8 +1,0 @@
-name: DocBoxFurnace
-main: me.znickq.assemblyfurnace.AssemblyFurnace
-version: 1.2
-permissions:
-    docboxfurnace.use:
-        description: enabled users to use DocBoxFurance
-        default: false
-    
