@@ -1,4 +1,4 @@
-package me.znickq.assemblyfurnace;
+package com.almramc.assemblylinefurnace;
 
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;

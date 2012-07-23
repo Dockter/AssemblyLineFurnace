@@ -1,4 +1,4 @@
-package me.znickq.assemblyfurnace;
+package com.almramc.assemblylinefurnace;
 
 import java.io.File;
 import java.util.HashMap;

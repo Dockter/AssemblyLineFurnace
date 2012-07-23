@@ -1,4 +1,4 @@
-package me.znickq.assemblyfurnace;
+package com.almramc.assemblylinefurnace;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +14,7 @@ public class PlacementUtils {
 
 	private static List<BlockFace> directions = Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
 	private static List<Material> burnables = Arrays.asList(Material.IRON_ORE, Material.GOLD_ORE, Material.SAND, Material.COBBLESTONE, Material.PORK, Material.CLAY_BALL, Material.getMaterial(17), Material.CACTUS, Material.DIAMOND_ORE, Material.RAW_FISH, Material.RAW_BEEF, Material.RAW_CHICKEN); 
-	private static List<Material> fuels = Arrays.asList(Material.COAL, Material.WOOD, Material.SAPLING, Material.STICK, Material.FENCE, Material.WOOD_STAIRS, Material.TRAP_DOOR, Material.WOOD, Material.getMaterial(58), Material.BOOKSHELF, Material.CHEST, Material.JUKEBOX, Material.NOTE_BLOCK, Material.LOCKED_CHEST, Material.BLAZE_ROD);
+	private static List<Material> fuels = Arrays.asList(Material.COAL, Material.WOOD, Material.SAPLING, Material.STICK, Material.FENCE, Material.WOOD_STAIRS, Material.TRAP_DOOR, Material.WOOD, Material.getMaterial(58), Material.BOOKSHELF, Material.CHEST, Material.JUKEBOX, Material.NOTE_BLOCK, Material.LOCKED_CHEST, Material.BLAZE_ROD, Material.LAVA_BUCKET);
 
 	public static boolean isValid(Block furnace) {
 		/*

@@ -1,4 +1,4 @@
-package me.znickq.assemblyfurnace;
+package com.almramc.assemblylinefurnace;
 
 import java.io.Serializable;
 import org.bukkit.Bukkit;
