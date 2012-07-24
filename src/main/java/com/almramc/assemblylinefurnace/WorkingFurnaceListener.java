@@ -138,7 +138,7 @@ public class WorkingFurnaceListener implements Listener {
 					furnace.getInventory().setResult(noFit.get(0));
 					String creator = workingFurnaces.get(furnace.getBlock()).getCreator();
 					Player plr = Bukkit.getPlayer(creator);
-					plr.sendMessage(ChatColor.GOLD + "One of your furnaces at " + furnace.getBlock().getX() + " " + furnace.getBlock().getY() + " " + furnace.getBlock().getZ() + " run out of chest space!");
+					plr.sendMessage(ChatColor.GOLD + "One of your furnaces at " + furnace.getBlock().getX() + ", " + furnace.getBlock().getY() + ", " + furnace.getBlock().getZ() + " run out of chest space!");
 					removeWorkingFurnace(furnace.getBlock());
 					return false;
 				} else {
@@ -173,7 +173,7 @@ public class WorkingFurnaceListener implements Listener {
 		if (furnace.getInventory().getFuel() == null) {
 			String creator = workingFurnaces.get(furnace.getBlock()).getCreator();
 			Player plr = Bukkit.getPlayer(creator);
-			plr.sendMessage(ChatColor.GOLD + "One of your furnaces at " + furnace.getBlock().getX() + " " + furnace.getBlock().getY() + " " + furnace.getBlock().getZ() + " run out of fuel!");
+			plr.sendMessage(ChatColor.GOLD + "One of your furnaces at " + furnace.getBlock().getX() + ", " + furnace.getBlock().getY() + ", " + furnace.getBlock().getZ() + " run out of fuel!");
 			removeWorkingFurnace(furnace.getBlock());
 			return false;
 		}
@@ -204,7 +204,7 @@ public class WorkingFurnaceListener implements Listener {
 		if (furnace.getInventory().getSmelting() == null) {
 			String creator = workingFurnaces.get(furnace.getBlock()).getCreator();
 			Player plr = Bukkit.getPlayer(creator);
-			plr.sendMessage(ChatColor.GOLD + "One of your furnaces at " + furnace.getBlock().getX() + " " + furnace.getBlock().getY() + " " + furnace.getBlock().getZ() + " is done smelting!");
+			plr.sendMessage(ChatColor.GOLD + "One of your furnaces at " + furnace.getBlock().getX() + ", " + furnace.getBlock().getY() + ", " + furnace.getBlock().getZ() + " is done smelting!");
 			removeWorkingFurnace(furnace.getBlock());
 			return false;
 		}

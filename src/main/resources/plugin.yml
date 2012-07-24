@@ -1,8 +1,8 @@
-name: DocBoxFurnace
+name: AssemblyLineFurnace
 main: com.almramc.assemblylinefurnace.AssemblyFurnace
-version: 1.2
+version: 1.0
 permissions:
-    docboxfurnace.use:
-        description: enabled users to use DocBoxFurance
+    assemblylinefurnace.use:
+        description: enabled users to use Assembly Line Furnace.
         default: false
     

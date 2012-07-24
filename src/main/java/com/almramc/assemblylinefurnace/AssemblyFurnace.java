@@ -35,14 +35,16 @@ public class AssemblyFurnace extends JavaPlugin implements Listener {
 		if (block == null) {
 			return;
 		}
-		if (PlacementUtils.isValid(block)) {
-			if (listener.isWorkingFurnace(block)) {
-				listener.removeWorkingFurnace(block);
-				event.getPlayer().sendMessage(ChatColor.RED + "Disabled working furnace!");
-			} else {
-				boolean worked = listener.addWorkingFurnace(block, event.getPlayer());
-				if (worked) {
-					event.getPlayer().sendMessage(ChatColor.GREEN + "Added working furnace");
+		if (event.getPlayer().hasPermission("assemblylinefurnace.use")) {
+			if (PlacementUtils.isValid(block)) {
+				if (listener.isWorkingFurnace(block)) {
+					listener.removeWorkingFurnace(block);
+					event.getPlayer().sendMessage(ChatColor.RED + "Disabled Assembly Line Furnace!");
+				} else {
+					boolean worked = listener.addWorkingFurnace(block, event.getPlayer());
+					if (worked) {
+						event.getPlayer().sendMessage(ChatColor.GREEN + "Activated Assembly Line Furnace!");
+					}
 				}
 			}
 		}
