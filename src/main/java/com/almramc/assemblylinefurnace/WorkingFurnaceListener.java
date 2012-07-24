@@ -158,6 +158,9 @@ public class WorkingFurnaceListener implements Listener {
 		if (fuel == null) {
 			return true;
 		}
+		if (furnace.getInventory().getFuel() != null) {
+			return true;
+		}
 		Chest ichest = (Chest) fuel.getState();
 		for (int slot = 0; slot < ichest.getBlockInventory().getSize(); slot++) {
 			ItemStack cur = ichest.getBlockInventory().getItem(slot);
