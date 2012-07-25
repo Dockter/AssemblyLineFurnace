@@ -159,7 +159,16 @@ public class WorkingFurnaceListener implements Listener {
 			return true;
 		}
 		if (furnace.getInventory().getFuel() != null) {
-			return true;
+			if(furnace.getInventory().getFuel().getType() != Material.BUCKET)
+				return true;
+			else {
+				Block output = PlacementUtils.getOutputChest(fuel, true);
+				if(output != null) {
+					Chest chs = (Chest) output.getState();
+					chs.getBlockInventory().addItem(furnace.getInventory().getFuel());
+				}
+				furnace.getInventory().setFuel(null);
+			}
 		}
 		Chest ichest = (Chest) fuel.getState();
 		for (int slot = 0; slot < ichest.getBlockInventory().getSize(); slot++) {
