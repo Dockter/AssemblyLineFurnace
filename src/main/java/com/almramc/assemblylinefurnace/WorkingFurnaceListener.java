@@ -34,6 +34,7 @@ public class WorkingFurnaceListener implements Listener {
 		Set<WorkingFurnace> loaded = new HashSet<WorkingFurnace>();
 		try {
 			loaded = (Set<WorkingFurnace>) SLAPI.load(plugin.getDataFolder() + File.separator + "data.dat");
+			keepLoaded = (Set<Pair<Integer, Integer>>) SLAPI.load(plugin.getDataFolder() + File.separator + "loaded.dat");
 		} catch (Exception ex) {
 		}
 		for (WorkingFurnace ll : loaded) {
@@ -55,6 +56,7 @@ public class WorkingFurnaceListener implements Listener {
 		}
 		try {
 			SLAPI.save(toSave, plugin.getDataFolder() + File.separator + "data.dat");
+			SLAPI.save(keepLoaded, getDataFolder() + File.separator + "loaded.dat");
 		} catch (Exception ex) {
 			Logger.getLogger(WorkingFurnaceListener.class.getName()).log(Level.SEVERE, null, ex);
 		}
