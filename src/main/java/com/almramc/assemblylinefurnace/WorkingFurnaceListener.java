@@ -19,12 +19,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class WorkingFurnaceListener implements Listener {
 
 	private AssemblyFurnace plugin;
 	private Map<Block, WorkingFurnace> workingFurnaces = new HashMap<Block, WorkingFurnace>();
+	private Set<Pair<Integer, Integer>> keepLoaded = new HashSet<Pair<Integer, Integer>>();
 
 	public WorkingFurnaceListener(AssemblyFurnace plugin) {
 		this.plugin = plugin;
@@ -41,7 +43,7 @@ public class WorkingFurnaceListener implements Listener {
 					workingFurnaces.put(bl, ll);
 				}
 			} catch (Exception ex) {
-				System.out.println("Error loading working furnace: "+ex.getMessage());
+				System.out.println("Error loading working furnace: " + ex.getMessage());
 			}
 		}
 	}
@@ -91,7 +93,6 @@ public class WorkingFurnaceListener implements Listener {
 		}
 		final Furnace furnace = (Furnace) event.getBlock().getState();
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-
 			public void run() {
 				delayedTakeOutput(furnace);
 			}
@@ -105,9 +106,9 @@ public class WorkingFurnaceListener implements Listener {
 		}
 		final Furnace f = ((Furnace) event.getBlock().getState());
 		//TODO remove in 1.3
-		if(event.getFuel().getType() == Material.LAVA_BUCKET) {
+		if (event.getFuel().getType() == Material.LAVA_BUCKET) {
 			Block inputChest = PlacementUtils.getInputChest(event.getBlock());
-			if(inputChest != null) {
+			if (inputChest != null) {
 				Chest iChest = (Chest) inputChest.getState();
 				iChest.getBlockInventory().addItem(new ItemStack(Material.BUCKET, 1));
 			}
@@ -117,6 +118,41 @@ public class WorkingFurnaceListener implements Listener {
 				refreshFuel(f);
 			}
 		}, 1L);
+	}
+
+	public void addLoaded(Player player) {
+		if (!player.hasPermission("alf.use")) {
+			player.sendMessage(ChatColor.RED + "You are not allowed to do that!");
+			return;
+		}
+		Block block = player.getTargetBlock(null, 5);
+		if (block == null) {
+			player.sendMessage(ChatColor.RED + "No block found!");
+			return;
+		}
+		Pair pr = new Pair(block.getChunk().getX(), block.getChunk().getZ());
+		if(keepLoaded.contains(pr)) {
+			keepLoaded.remove(pr);
+			player.sendMessage(ChatColor.RED + "This furnace's chunk will now unload!");
+		}
+		if (!(workingFurnaces.containsKey(block))) {
+			player.sendMessage(ChatColor.RED + "That's not an assembly line furnace!");
+			return;
+		}
+		if (!keepLoaded.contains(pr)) {
+			keepLoaded.add(pr);
+			player.sendMessage(ChatColor.RED + "This furnace's chunk will no longer unload!");
+		} 
+
+	}
+
+	@EventHandler
+	public void onChunkUnload(ChunkUnloadEvent event) {
+		int x = event.getChunk().getX();
+		int z = event.getChunk().getZ();
+		if (keepLoaded.contains(new Pair(x, z))) {
+			event.setCancelled(true);
+		}
 	}
 
 	public boolean isWorkingFurnace(Block block) {
@@ -145,8 +181,9 @@ public class WorkingFurnaceListener implements Listener {
 					furnace.getInventory().setResult(noFit.get(0));
 					String creator = workingFurnaces.get(furnace.getBlock()).getCreator();
 					Player plr = Bukkit.getPlayer(creator);
-					if(plr != null)
+					if (plr != null) {
 						plr.sendMessage(ChatColor.GOLD + "One of your furnaces at " + furnace.getBlock().getX() + ", " + furnace.getBlock().getY() + ", " + furnace.getBlock().getZ() + " run out of chest space!");
+					}
 					removeWorkingFurnace(furnace.getBlock());
 					return false;
 				} else {
@@ -167,22 +204,22 @@ public class WorkingFurnaceListener implements Listener {
 		}
 		//TODO uncomment in 1.3
 		/*if (furnace.getInventory().getFuel() != null) {
-			if(furnace.getInventory().getFuel().getType() != Material.BUCKET)
-				return true;
-			else {
-				Block output = PlacementUtils.getOutputChest(fuel, true);
-				if(output != null) {
-					Chest chs = (Chest) output.getState();
-					chs.getBlockInventory().addItem(furnace.getInventory().getFuel());
-				}
-				furnace.getInventory().setFuel(null);
-			}
-		}*/ 
-		
+		 if(furnace.getInventory().getFuel().getType() != Material.BUCKET)
+		 return true;
+		 else {
+		 Block output = PlacementUtils.getOutputChest(fuel, true);
+		 if(output != null) {
+		 Chest chs = (Chest) output.getState();
+		 chs.getBlockInventory().addItem(furnace.getInventory().getFuel());
+		 }
+		 furnace.getInventory().setFuel(null);
+		 }
+		 }*/
+
 		if (furnace.getInventory().getFuel() != null) {
 			return true;
 		}
-		
+
 		Chest ichest = (Chest) fuel.getState();
 		for (int slot = 0; slot < ichest.getBlockInventory().getSize(); slot++) {
 			ItemStack cur = ichest.getBlockInventory().getItem(slot);
@@ -199,8 +236,9 @@ public class WorkingFurnaceListener implements Listener {
 		if (furnace.getInventory().getFuel() == null) {
 			String creator = workingFurnaces.get(furnace.getBlock()).getCreator();
 			Player plr = Bukkit.getPlayer(creator);
-			if(plr!=null)
+			if (plr != null) {
 				plr.sendMessage(ChatColor.GOLD + "One of your furnaces at " + furnace.getBlock().getX() + ", " + furnace.getBlock().getY() + ", " + furnace.getBlock().getZ() + " run out of fuel!");
+			}
 			removeWorkingFurnace(furnace.getBlock());
 			return false;
 		}
@@ -231,8 +269,9 @@ public class WorkingFurnaceListener implements Listener {
 		if (furnace.getInventory().getSmelting() == null) {
 			String creator = workingFurnaces.get(furnace.getBlock()).getCreator();
 			Player plr = Bukkit.getPlayer(creator);
-			if(plr!=null)
+			if (plr != null) {
 				plr.sendMessage(ChatColor.GOLD + "One of your furnaces at " + furnace.getBlock().getX() + ", " + furnace.getBlock().getY() + ", " + furnace.getBlock().getZ() + " is done smelting!");
+			}
 			removeWorkingFurnace(furnace.getBlock());
 			return false;
 		}

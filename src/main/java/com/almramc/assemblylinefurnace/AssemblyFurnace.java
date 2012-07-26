@@ -2,6 +2,9 @@ package com.almramc.assemblylinefurnace;
 
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -48,5 +51,17 @@ public class AssemblyFurnace extends JavaPlugin implements Listener {
 				}
 			}
 		}
+	}
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if (args.length == 0) {
+			return false;
+		}
+		if (args[0].equalsIgnoreCase("keeploaded")) {
+			listener.addLoaded((Player) sender);
+			return true;
+		}
+		return false;
 	}
 }

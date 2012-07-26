@@ -5,4 +5,8 @@ permissions:
     assemblylinefurnace.use:
         description: enabled users to use Assembly Line Furnace.
         default: false
-    
+commands:
+    alf:
+        description: Furnace commands!
+        usage: |
+            Usage: /<command> keeploaded
