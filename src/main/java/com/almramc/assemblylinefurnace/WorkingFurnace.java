@@ -59,7 +59,6 @@ public class WorkingFurnace implements Serializable{
 	}
 
 	public Block getBlock() {
-		System.out.println("Getting "+world);
 		return Bukkit.getWorld(world).getBlockAt(x,y,z);
 	}
 }

@@ -56,7 +56,7 @@ public class WorkingFurnaceListener implements Listener {
 		}
 		try {
 			SLAPI.save(toSave, plugin.getDataFolder() + File.separator + "data.dat");
-			SLAPI.save(keepLoaded, getDataFolder() + File.separator + "loaded.dat");
+			SLAPI.save(keepLoaded, plugin.getDataFolder() + File.separator + "loaded.dat");
 		} catch (Exception ex) {
 			Logger.getLogger(WorkingFurnaceListener.class.getName()).log(Level.SEVERE, null, ex);
 		}
