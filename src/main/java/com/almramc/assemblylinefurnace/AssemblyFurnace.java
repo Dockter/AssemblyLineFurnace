@@ -59,8 +59,8 @@ public class AssemblyFurnace extends JavaPlugin implements Listener {
 			return false;
 		}
 		if (args[0].equalsIgnoreCase("keeploaded")) {
-			listener.addLoaded((Player) sender);
-			return true;
+				listener.addLoaded((Player) sender);			
+				return true;
 		}
 		return false;
 	}

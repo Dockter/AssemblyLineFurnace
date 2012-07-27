@@ -112,7 +112,7 @@ public class WorkingFurnaceListener implements Listener {
 			Block inputChest = PlacementUtils.getInputChest(event.getBlock());
 			if (inputChest != null) {
 				Chest iChest = (Chest) inputChest.getState();
-				iChest.getBlockInventory().addItem(new ItemStack(Material.BUCKET, 1));
+				iChest.getInventory().addItem(new ItemStack(Material.BUCKET, 1));
 			}
 		}
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -123,7 +123,7 @@ public class WorkingFurnaceListener implements Listener {
 	}
 
 	public void addLoaded(Player player) {
-		if (!player.hasPermission("alf.use")) {
+		if (!player.hasPermission("assemblylinefurnace.keeploaded")) {
 			player.sendMessage(ChatColor.RED + "You are not allowed to do that!");
 			return;
 		}
@@ -133,9 +133,10 @@ public class WorkingFurnaceListener implements Listener {
 			return;
 		}
 		Pair pr = new Pair(block.getChunk().getX(), block.getChunk().getZ());
-		if(keepLoaded.contains(pr)) {
+		if (keepLoaded.contains(pr)) {
 			keepLoaded.remove(pr);
-			player.sendMessage(ChatColor.RED + "This furnace's chunk will now unload!");
+			player.sendMessage(ChatColor.GREEN + "This furnace's chunk will now unload naturally!");
+			return;
 		}
 		if (!(workingFurnaces.containsKey(block))) {
 			player.sendMessage(ChatColor.RED + "That's not an assembly line furnace!");
@@ -144,7 +145,7 @@ public class WorkingFurnaceListener implements Listener {
 		if (!keepLoaded.contains(pr)) {
 			keepLoaded.add(pr);
 			player.sendMessage(ChatColor.RED + "This furnace's chunk will no longer unload!");
-		} 
+		}
 
 	}
 
@@ -162,7 +163,7 @@ public class WorkingFurnaceListener implements Listener {
 	}
 
 	private boolean delayedTakeOutput(final Furnace furnace) {
-		Block output = PlacementUtils.getOutputChest(furnace.getBlock(), true);
+		Block output = PlacementUtils.getOutputChest(furnace.getBlock());
 		if (output == null) {
 			return true;
 		}
@@ -170,28 +171,16 @@ public class WorkingFurnaceListener implements Listener {
 			return true;
 		}
 		Chest chest = (Chest) output.getState();
-		HashMap<Integer, ItemStack> noFit = chest.getBlockInventory().addItem(furnace.getInventory().getResult());
+		HashMap<Integer, ItemStack> noFit = chest.getInventory().addItem(furnace.getInventory().getResult());
 		if (!noFit.isEmpty()) {
-			ItemStack remained = noFit.get(0);
-			Block soutput = PlacementUtils.getOutputChest(furnace.getBlock(), false);
-			if (soutput == null) {
-				furnace.getInventory().setResult(remained);
-			} else {
-				Chest schest = (Chest) soutput.getState();
-				noFit = schest.getBlockInventory().addItem(remained);
-				if (noFit.get(0) != null) {
-					furnace.getInventory().setResult(noFit.get(0));
-					String creator = workingFurnaces.get(furnace.getBlock()).getCreator();
-					Player plr = Bukkit.getPlayer(creator);
-					if (plr != null) {
-						plr.sendMessage(ChatColor.GOLD + "One of your furnaces at " + furnace.getBlock().getX() + ", " + furnace.getBlock().getY() + ", " + furnace.getBlock().getZ() + " run out of chest space!");
-					}
-					removeWorkingFurnace(furnace.getBlock());
-					return false;
-				} else {
-					furnace.getInventory().setResult(new ItemStack(0, 0));
-				}
+			furnace.getInventory().setResult(noFit.get(0));
+			String creator = workingFurnaces.get(furnace.getBlock()).getCreator();
+			Player plr = Bukkit.getPlayer(creator);
+			if (plr != null) {
+				plr.sendMessage(ChatColor.GOLD + "One of your furnaces at " + furnace.getBlock().getX() + ", " + furnace.getBlock().getY() + ", " + furnace.getBlock().getZ() + " ran out of chest space!");
 			}
+			removeWorkingFurnace(furnace.getBlock());
+			return false;
 		} else {
 			furnace.getInventory().setResult(new ItemStack(0, 0));
 		}
@@ -212,7 +201,7 @@ public class WorkingFurnaceListener implements Listener {
 		 Block output = PlacementUtils.getOutputChest(fuel, true);
 		 if(output != null) {
 		 Chest chs = (Chest) output.getState();
-		 chs.getBlockInventory().addItem(furnace.getInventory().getFuel());
+		 chs.getInventory().addItem(furnace.getInventory().getFuel());
 		 }
 		 furnace.getInventory().setFuel(null);
 		 }
@@ -223,8 +212,8 @@ public class WorkingFurnaceListener implements Listener {
 		}
 
 		Chest ichest = (Chest) fuel.getState();
-		for (int slot = 0; slot < ichest.getBlockInventory().getSize(); slot++) {
-			ItemStack cur = ichest.getBlockInventory().getItem(slot);
+		for (int slot = 0; slot < ichest.getInventory().getSize(); slot++) {
+			ItemStack cur = ichest.getInventory().getItem(slot);
 			if (cur == null) {
 				continue;
 			}
@@ -232,14 +221,14 @@ public class WorkingFurnaceListener implements Listener {
 				continue;
 			}
 			furnace.getInventory().setFuel(cur);
-			ichest.getBlockInventory().setItem(slot, null);
-			slot = ichest.getBlockInventory().getSize();
+			ichest.getInventory().setItem(slot, null);
+			slot = ichest.getInventory().getSize();
 		}
 		if (furnace.getInventory().getFuel() == null) {
 			String creator = workingFurnaces.get(furnace.getBlock()).getCreator();
 			Player plr = Bukkit.getPlayer(creator);
 			if (plr != null) {
-				plr.sendMessage(ChatColor.GOLD + "One of your furnaces at " + furnace.getBlock().getX() + ", " + furnace.getBlock().getY() + ", " + furnace.getBlock().getZ() + " run out of fuel!");
+				plr.sendMessage(ChatColor.GOLD + "One of your furnaces at " + furnace.getBlock().getX() + ", " + furnace.getBlock().getY() + ", " + furnace.getBlock().getZ() + " ran out of fuel!");
 			}
 			removeWorkingFurnace(furnace.getBlock());
 			return false;
@@ -256,8 +245,9 @@ public class WorkingFurnaceListener implements Listener {
 			return true;
 		}
 		Chest ichest = (Chest) input.getState();
-		for (int slot = 0; slot < ichest.getBlockInventory().getSize(); slot++) {
-			ItemStack cur = ichest.getBlockInventory().getItem(slot);
+		System.out.println("Got chest " + ichest);
+		for (int slot = 0; slot < ichest.getInventory().getSize(); slot++) {
+			ItemStack cur = ichest.getInventory().getItem(slot);
 			if (cur == null) {
 				continue;
 			}
@@ -265,8 +255,8 @@ public class WorkingFurnaceListener implements Listener {
 				continue;
 			}
 			furnace.getInventory().setSmelting(cur);
-			ichest.getBlockInventory().setItem(slot, null);
-			slot = ichest.getBlockInventory().getSize();
+			ichest.getInventory().setItem(slot, null);
+			slot = ichest.getInventory().getSize();
 		}
 		if (furnace.getInventory().getSmelting() == null) {
 			String creator = workingFurnaces.get(furnace.getBlock()).getCreator();

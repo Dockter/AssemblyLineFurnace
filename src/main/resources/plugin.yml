@@ -5,6 +5,9 @@ permissions:
     assemblylinefurnace.use:
         description: enabled users to use Assembly Line Furnace.
         default: false
+    assemblylinefurnace.keeploaded:
+        description: allows an ALF to keep the chunk loaded.
+        default: false
 commands:
     alf:
         description: Furnace commands!
