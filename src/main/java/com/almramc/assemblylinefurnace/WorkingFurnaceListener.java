@@ -245,7 +245,6 @@ public class WorkingFurnaceListener implements Listener {
 			return true;
 		}
 		Chest ichest = (Chest) input.getState();
-		System.out.println("Got chest " + ichest);
 		for (int slot = 0; slot < ichest.getInventory().getSize(); slot++) {
 			ItemStack cur = ichest.getInventory().getItem(slot);
 			if (cur == null) {
