@@ -106,8 +106,7 @@ public class WorkingFurnaceListener implements Listener {
 		if (!workingFurnaces.containsKey(event.getBlock())) {
 			return;
 		}
-		final Furnace f = ((Furnace) event.getBlock().getState());
-		//TODO remove in 1.3
+		final Furnace f = ((Furnace) event.getBlock().getState());		
 		if (event.getFuel().getType() == Material.LAVA_BUCKET) {
 			Block inputChest = PlacementUtils.getInputChest(event.getBlock());
 			if (inputChest != null) {
