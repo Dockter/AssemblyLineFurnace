@@ -107,6 +107,7 @@ public class WorkingFurnaceListener implements Listener {
 			return;
 		}
 		final Furnace f = ((Furnace) event.getBlock().getState());		
+		/*
 		if (event.getFuel().getType() == Material.LAVA_BUCKET) {
 			Block inputChest = PlacementUtils.getInputChest(event.getBlock());
 			if (inputChest != null) {
@@ -114,6 +115,7 @@ public class WorkingFurnaceListener implements Listener {
 				iChest.getInventory().addItem(new ItemStack(Material.BUCKET, 1));
 			}
 		}
+		*/
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			public void run() {
 				refreshFuel(f);
@@ -192,19 +194,19 @@ public class WorkingFurnaceListener implements Listener {
 		if (fuel == null) {
 			return true;
 		}
-		//TODO uncomment in 1.3
-		/*if (furnace.getInventory().getFuel() != null) {
-		 if(furnace.getInventory().getFuel().getType() != Material.BUCKET)
-		 return true;
-		 else {
-		 Block output = PlacementUtils.getOutputChest(fuel, true);
-		 if(output != null) {
-		 Chest chs = (Chest) output.getState();
-		 chs.getInventory().addItem(furnace.getInventory().getFuel());
-		 }
-		 furnace.getInventory().setFuel(null);
-		 }
-		 }*/
+		
+		if (furnace.getInventory().getFuel() != null) {
+			if(furnace.getInventory().getFuel().getType() != Material.BUCKET)
+				return true;
+			else {
+				Block input = PlacementUtils.getInputChest(furnace.getBlock());
+				if(input != null) {
+					Chest chs = (Chest) input.getState();
+					chs.getInventory().addItem(furnace.getInventory().getFuel());
+				}
+				furnace.getInventory().setFuel(null);
+			}
+		}
 
 		if (furnace.getInventory().getFuel() != null) {
 			return true;
