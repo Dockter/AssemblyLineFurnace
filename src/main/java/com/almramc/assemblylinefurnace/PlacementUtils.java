@@ -11,8 +11,8 @@ import org.bukkit.material.FurnaceAndDispenser;
 public class PlacementUtils {
 
 	private static List<BlockFace> directions = Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
-	private static List<Material> burnables = Arrays.asList(Material.IRON_ORE, Material.GOLD_ORE, Material.SAND, Material.COBBLESTONE, Material.PORK, Material.CLAY_BALL, Material.getMaterial(17), Material.CACTUS, Material.DIAMOND_ORE, Material.RAW_FISH, Material.RAW_BEEF, Material.RAW_CHICKEN, Material.POTATO_ITEM, Material.QUARTZ_ORE); 
-	private static List<Material> fuels = Arrays.asList(Material.COAL, Material.WOOD, Material.SAPLING, Material.STICK, Material.FENCE, Material.WOOD_STAIRS, Material.TRAP_DOOR, Material.getMaterial(58), Material.BOOKSHELF, Material.CHEST, Material.JUKEBOX, Material.NOTE_BLOCK, Material.LOCKED_CHEST, Material.BLAZE_ROD, Material.LAVA_BUCKET);
+	private static List<Material> burnables = Arrays.asList(Material.CLAY, Material.IRON_ORE, Material.GOLD_ORE, Material.SAND, Material.COBBLESTONE, Material.PORK, Material.CLAY_BALL, Material.getMaterial(17), Material.CACTUS, Material.DIAMOND_ORE, Material.RAW_FISH, Material.RAW_BEEF, Material.RAW_CHICKEN, Material.POTATO_ITEM, Material.QUARTZ_ORE, Material.FLINT); 
+	private static List<Material> fuels = Arrays.asList(Material.COAL, Material.COAL_BLOCK, Material.WOOD, Material.SAPLING, Material.STICK, Material.FENCE, Material.WOOD_STAIRS, Material.TRAP_DOOR, Material.getMaterial(58), Material.BOOKSHELF, Material.CHEST, Material.JUKEBOX, Material.NOTE_BLOCK, Material.LOCKED_CHEST, Material.BLAZE_ROD, Material.LAVA_BUCKET, Material.FLINT);
 
 	public static boolean isValid(Block furnace) {
 		/*
