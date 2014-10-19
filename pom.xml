@@ -4,7 +4,7 @@
 
     <groupId>com.almuramc</groupId>
     <artifactId>AssemblyLineFurnace</artifactId>
-    <version>1.40</version>
+    <version>1.45</version>
     <packaging>jar</packaging>
 
     <name>AssemblyLineFurnace</name>
