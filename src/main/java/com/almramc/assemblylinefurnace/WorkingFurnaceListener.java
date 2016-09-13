@@ -165,6 +165,7 @@ public class WorkingFurnaceListener implements Listener {
 
 	private boolean delayedTakeOutput(final Furnace furnace) {
 		Block output = PlacementUtils.getOutputChest(furnace.getBlock());
+		Block input = PlacementUtils.getInputChest(furnace.getBlock());
 		if (output == null) {
 			return true;
 		}
@@ -172,6 +173,26 @@ public class WorkingFurnaceListener implements Listener {
 			return true;
 		}
 		Chest chest = (Chest) output.getState();
+		
+		boolean isButter = furnace.getInventory().getResult().getType() == Material.getMaterial("ALMURA_INGREDIENTSBUTTER");
+		if (isButter) {
+		    if (input == null) {
+		        // It should be impossible to get here.
+		        return true;
+		    }
+		    Chest inputChest = (Chest) input.getState();
+		    HashMap<Integer, ItemStack> noFit = inputChest.getInventory().addItem(new ItemStack(Material.BUCKET, 1));
+		    if (!noFit.isEmpty()) {
+	            furnace.getInventory().setResult(noFit.get(0));
+	            String creator = workingFurnaces.get(furnace.getBlock()).getCreator();
+	            Player plr = Bukkit.getPlayer(creator);
+	            if (plr != null) {
+	                plr.sendMessage(ChatColor.GOLD + "One of your furnaces at " + furnace.getBlock().getX() + ", " + furnace.getBlock().getY() + ", " + furnace.getBlock().getZ() + " ran out of input chest space for bucket returns!");
+	            }
+	            removeWorkingFurnace(furnace.getBlock());
+	        }
+		}
+		
 		HashMap<Integer, ItemStack> noFit = chest.getInventory().addItem(furnace.getInventory().getResult());
 		if (!noFit.isEmpty()) {
 			furnace.getInventory().setResult(noFit.get(0));

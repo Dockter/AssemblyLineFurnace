@@ -4,7 +4,7 @@
 
     <groupId>com.almuramc</groupId>
     <artifactId>AssemblyLineFurnace</artifactId>
-    <version>1.45</version>
+    <version>1.6</version>
     <packaging>jar</packaging>
 
     <name>AssemblyLineFurnace</name>
@@ -49,13 +49,7 @@
             <artifactId>junit</artifactId>
             <version>3.8.1</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.getspout</groupId>
-            <artifactId>spoutplugin</artifactId>
-            <version>dev-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
+        </dependency>       
         <dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
